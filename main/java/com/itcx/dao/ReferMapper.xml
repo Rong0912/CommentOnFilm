@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcx.dao.ReferMapper">
+    <select id="selectAll"  resultType="Refer">
+		select * from crm_refer
+	</select>
+
+	<select id="demandRefer" resultType="Refer" parameterType="Refer">
+		select id,source,referName,username,state,resourceLevel from crm_refer where username=#{username} and source=#{source} and referName=#{referName}
+	</select>
+
+	<select id="deleteRefer" parameterType="int">
+		delete from crm_refer where id=#{id}
+	</select>
+
+	<select id="referCreate" parameterType="Refer" resultType="Refer">
+		insert into crm_refer(username,gender,source,state,referName,isJob,phone,idcard,weixin,qq,address,email,byAcademy,remark)
+		values (#{username},#{gender},#{source},#{state},#{referName},#{isJob},#{phone},#{idcard},#{weixin},#{qq},#{address},#{email},#{byAcademy},#{remark})
+	</select>
+	<select id="selectById" resultType="Refer">
+		select *from crm_refer where id=#{id}
+
+	</select>
+	<select id="updateRefer" resultType="Refer" parameterType="Refer">
+		update crm_refer set username=#{username},gender=#{gender},source=#{source},state=#{state},
+		referName=#{referName},isJob=#{isJob},phone=#{phone},idcard=#{idcard},weixin=#{weixin},
+		qq=#{qq},address=#{address},email=#{email},byAcademy=#{byAcademy},remark=#{remark} where id=#{id}
+
+	</select>
+</mapper>

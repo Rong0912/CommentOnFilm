@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcx.dao.StaffMapper">
+
+	<select id="login" parameterType="Staff" resultType="Staff">
+		select * from crm_staff
+		where loginName=#{loginName} and loginPwd=#{loginPwd}
+	</select>
+
+    <select id="selectAll"  resultType="Staff">
+		select staffID,staffName,gender,birthday,onDutyDate,postName
+		from crm_staff,crm_post
+		where crm_staff.postID=crm_post.postID
+--
+	</select>
+
+	<select id="demandStaff" parameterType="Staff" resultType="Staff">
+		select staffID,staffName,gender,birthday,postName,onDutyDate from crm_staff,crm_post
+		where crm_staff.postID=crm_post.postID and staffName=#{staffName} and postName=#{postName} and onDutyDate=#{onDutyDate}
+	</select>
+
+
+	<select id="deleteStaff" parameterType="int">
+		delete from crm_staff where staffID=#{staffID}
+	</select>
+
+	<select id="createStaff" parameterType="Staff" resultType="Staff">
+		insert into crm_staff (staffName,gender,birthday,onDutyDate,postID,staffCode,loginName,loginPwd)
+		values (#{staffName},#{gender},#{birthday},#{onDutyDate},(select postID from crm_post where postName=#{postName}),#{staffCode},#{loginName},#{loginPwd})
+	</select>
+
+	<select id="selectById" resultType="Staff">
+		select * from crm_staff where staffID=#{staffID}
+	</select>
+
+	<select id="updateStaff" parameterType="Staff" resultType="Staff">
+		update crm_staff set staffName=#{staffName},gender=#{gender},birthday=#{birthday},onDutyDate=#{onDutyDate},
+		postID=(select postID from crm_post where postName=#{postName}),staffCode=#{staffCode},loginName=#{loginName},loginPwd=#{loginPwd} where staffID=#{staffID}
+	</select>
+
+</mapper>

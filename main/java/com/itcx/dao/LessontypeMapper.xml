@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcx.dao.LessontypeMapper">
+
+    <select id="selectAll"  resultType="Lessontype">
+		select * from crm_lessontype
+	</select>
+
+	<select id="findLesson" resultType="Lessontype"  parameterType="String">
+		select * from crm_lessontype where lessonName=#{lessonName}
+	</select>
+
+	<delete id="deleteLesson"  parameterType="int">
+		delete from crm_lessontype where ID=#{ID}
+	</delete>
+
+    <select id="createLesson" resultType="Lessontype" parameterType="Lessontype">
+        insert into crm_lessontype (lessonName,lessoncost,totalTime,remark)values(#{lessonName},#{lessoncost},#{totalTime},#{remark})
+    </select>
+
+	<select id="selectById" resultType="Lessontype">
+		select * from crm_lessontype where ID=#{ID}
+	</select>
+
+    <select id="updateLesson" resultType="Lessontype" parameterType="Lessontype">
+        update crm_lessontype set lessonName=#{lessonName},lessoncost=#{lessoncost},totalTime=#{totalTime},remark=#{remark} where ID=#{ID}
+    </select>
+
+</mapper>

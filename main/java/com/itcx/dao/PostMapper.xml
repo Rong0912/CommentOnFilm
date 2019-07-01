@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcx.dao.PostMapper">
+    <select id="selectAll"  resultType="Post">
+		select postID,postName,depName
+		from crm_post,crm_department
+		where crm_post.depID=crm_department.id
+	</select>
+
+	<select id="findPost" parameterType="Post" resultType="Post">
+		select postID,postName,depName
+		from crm_post,crm_department
+		where crm_post.depID=crm_department.id and depName=#{depName} and postName=#{postName}
+
+
+	</select>
+
+
+	<delete id="deletePost"  parameterType="int">
+		delete from crm_post where postID=#{postID}
+	</delete>
+
+
+	<select id="createPost" parameterType="Post" resultType="Post">
+
+		insert into crm_post (postName,depID) values (#{postName},(select id from crm_department where depName = #{depName}))
+
+	</select>
+
+	<select id="findById" resultType="Post">
+
+		select * from crm_post where postID=#{postID}
+
+	</select>
+
+	<select id="updatePost" resultType="Post" parameterType="Post">
+
+		update crm_post set postName=#{postName},depID=(select id from crm_department where depName=#{depName}) where postID=#{postID}
+
+	</select>
+</mapper>

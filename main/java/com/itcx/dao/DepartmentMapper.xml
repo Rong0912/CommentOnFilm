@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.itcx.dao.DepartmentMapper">
+    <select id="selectAll"  resultType="Department">
+		select * from crm_department
+	</select>
+	<select id="findDep"  resultType="Department" parameterType="String">
+		select * from crm_department where depName=#{depName}
+	</select>
+    <delete id="deleteDep" parameterType="int">
+		delete from crm_department where id=#{id}
+	</delete>
+	<select id="addDep" parameterType="Department" resultType="Department">
+		insert into crm_department (depName) values (#{depName})
+	</select>
+	<select id="selectById"  resultType="Department">
+		select * from crm_department where id=#{id}
+	</select>
+	<select id="updateDep" parameterType="Department" resultType="Department">
+		update crm_department set depName=#{depName} where id=#{id}
+	</select>
+	<select id="selectMapperPagingList" resultType="Department" parameterType="String">
+		select id, depName from crm_department where depName like '%${depName}%' limit ${start},${rows}
+	</select>
+	<select id="selectCountBydepName" resultType="int" parameterType="String">
+		select count(id) from crm_department where depName like '%${depName}%'
+	</select>
+
+</mapper>
