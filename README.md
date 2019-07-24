@@ -1,5 +1,5 @@
 # Helooword
-manage
+
 first one is a Student management system,Based on SSM framework.
 Database table building, framework preliminary building, complete CRUD function, write some simple business at the same time, set up pagination, login management interface, interceptor function, etc
 Project summary: mainly responsible for the background
