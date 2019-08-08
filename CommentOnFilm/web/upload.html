@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        .imageDiv {
+            display:inline-block;
+            width:160px;
+            height:130px;
+            -webkit-box-sizing:border-box;
+            -moz-box-sizing:border-box;
+            box-sizing:border-box;
+            border:1px /*dashed darkgray*/;
+            background:#f8f8f8;
+            position:relative;
+            overflow:hidden;
+            margin:10px
+        }
+        .cover {
+            position:absolute;
+            z-index:1;
+            top:0;
+            left:0;
+            width:160px;
+            height:130px;
+            background-color:rgba(0,0,0,.3);
+            display:none;
+            line-height:125px;
+            text-align:center;
+            cursor:pointer;
+        }
+        .cover .delbtn {
+            color:red;
+            font-size:20px;
+        }
+        .imageDiv:hover .cover {
+            display:block;
+        }
+        .addImages {
+            display:inline-block;
+            width:160px;
+            height:130px;
+            -webkit-box-sizing:border-box;
+            -moz-box-sizing:border-box;
+            box-sizing:border-box;
+            border:1px /*dashed darkgray*/;
+            background:#f8f8f8;
+            position:relative;
+            overflow:hidden;
+            margin:10px;
+        }
+        .text-detail {
+            margin-top:40px;
+            text-align:center;
+        }
+        .text-detail span {
+            font-size:40px;
+        }
+        .file {
+            position:absolute;
+            top:0;
+            left:0;
+            width:160px;
+            height:130px;
+            opacity:0;
+        }
+
+    </style>
+
+</head>
+<body>
+<!--<form method="post" action="../../MultiPictareaddData" id="passForm" enctype="multipart/form-data" multipart="">-->
+
+<!--<div id="Pic_pass">
+    <p style="font-size: 20px;font-weight: bold;">请上传多张照片 </p>
+    <p><span style="color: red">注：每张照片大写不可超过4M，且最多可以传十张</span></p>
+    <div class="picDiv">
+        <div class="addImages">
+
+            <input type="file" class="file" id="uploadFilexxx" multiple="multiple" accept="image/png, image/jpeg, image/gif, image/jpg">
+            <div class="text-detail">
+                <span>+</span>
+                <p>点击上传</p>
+            </div>
+        </div>
+        <button type="button" id="bbt">上传</button>
+    </div>
+</div>
+<div class="msg" style="display: none;"></div>-->
+<!--</form>-->
+
+<div id="addMessage" >
+    <form action="/writeMessage" method="post">
+        <div style="margin:30px;width: 940px;height:370px;border: 1px solid" action="/writeMessage" method="post">
+
+            title:<input type="text" size="30" height="30px" name="title">
+            message:<textarea rows="10" cols="10" type="text" name="message"></textarea>
+
+
+
+            <input type="submit" value="提交评论">
+
+
+        </div><br>
+
+        <div id="Pic_pass">
+            <p style="font-size: 20px;font-weight: bold;">请上传多张照片 </p>
+            <p><span style="color: red">注：每张照片大写不可超过4M，且最多可以传十张</span></p>
+            <div class="picDiv">
+                <div class="addImages">
+
+                    <input type="file" name="picture" class="file" id="uploadFilexxx" multiple="multiple" accept="image/png, image/jpeg, image/gif, image/jpg">
+                    <div class="text-detail">
+                        <span>+</span>
+                        <p>点击上传</p>
+                    </div>
+                </div>
+                <!--<%&#45;&#45;<button type="button" id="bbt">上传</button>&#45;&#45;%>-->
+            </div>
+        </div>
+        <div class="msg" style="display: none;"></div>
+    </form>
+</div>
+
+<script src="js/jquery-3.2.1.js"></script>
+
+<script>
+
+
+    //图片上传预览功能
+    var userAgent = navigator.userAgent; //用于判断浏览器类型
+    //使用formData完成多图片上传
+    var formData = new FormData();
+    var formData2 = new FormData();
+    $(".file").change(function() {
+        //获取选择图片的对象
+        var docObj = $(this)[0];
+        var picDiv = $(this).parents(".picDiv");
+        //得到所有的图片文件
+        var fileList = docObj.files;
+        //将图片数据放到formData中传递后台
+        if($(this)[0].files.length==1){
+            formData.append("file",docObj.files[0]);
+            formData2.append("file",docObj.files[0]);
+        }else{
+            for(var i=0; i<$(this)[0].files.length;i++){
+                formData.append("file",$(this)[0].files[i]);
+                formData2.append("file",$(this)[0].files[i]);
+            }
+        }
+        //循环遍历
+        for (var i = 0; i < fileList.length; i++) {
+            //动态添加html元素
+            var picHtml = "<div class='imageDiv' nm='"+fileList[i].name+"'> <img id='img" + fileList[i].name + "' /> <div class='cover'><i class='delbtn'>删除</i></div></div>";
+            console.log(picHtml);
+            picDiv.prepend(picHtml);
+            //获取图片imgi的对象
+            var imgObjPreview = document.getElementById("img" + fileList[i].name);
+            if (fileList && fileList[i]) {
+                //图片属性
+                imgObjPreview.style.display = 'block';
+                imgObjPreview.style.width = '160px';
+                imgObjPreview.style.height = '130px';
+                //imgObjPreview.src = docObj.files[0].getAsDataURL();
+                //火狐7以上版本不能用上面的getAsDataURL()方式获取，需要以下方式
+                if (userAgent.indexOf('MSIE') == -1) {
+                    //IE以外浏览器
+                    imgObjPreview.src = window.URL.createObjectURL(docObj.files[i]); //获取上传图片文件的物理路径;
+                    console.log(imgObjPreview.src);
+                    // var msgHtml = '<input type="file" id="fileInput" multiple/>';
+                } else {
+                    //IE浏览器
+                    if (docObj.value.indexOf(",") != -1) {
+                        var srcArr = docObj.value.split(",");
+                        imgObjPreview.src = srcArr[i];
+                    } else {
+                        imgObjPreview.src = docObj.value;
+                    }
+                }
+            }
+        }
+        /*删除功能*/
+        $(".delbtn").click(function() {
+            if(formData.getAll("file").length==0){
+                formData=formData2;
+            }else{
+                formData2.delete("file");
+                for(var i=0;i<formData.getAll("file").length;i++){
+                    if(formData.getAll("file")[i].name==$(this).parents(".imageDiv").attr("nm")){
+
+                    }else{
+                        formData2.append("file",formData.getAll("file")[i]);
+                    }
+                }
+            }
+            formData.delete("file");
+            for(var i=0;i<formData2.getAll("file").length;i++){
+                formData.append("file",formData2.getAll("file")[i]);
+            }
+            var _this = $(this);
+            _this.parents(".imageDiv").remove();
+        });
+    });
+    /*$("#bbt").click(function(){
+        $.ajax({
+            type:'post',
+            dataType:'json',
+            data:formData2,
+            cache: false, //上传文件不需要缓存
+            url:'/editMessage',
+            processData: false, // 告诉jQuery不要去处理发送的数据
+            contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+            success:function(data){
+                if(data.success==1){
+                    $.messager.alert('提示', '图片上传成功！');
+                    // window.location.reload();
+                }else{
+                    $.messager.alert('提示', '图片上传失败！');
+                }
+            }
+        })
+    })*/
+</script>
+</body>
+</html>

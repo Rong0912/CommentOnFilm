@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆界面</title>
+
+    <!--  //<link rel="stylesheet" href="/login_files/index.css">-->
+    <style type="text/css">
+        *{margin: 0;padding: 0;list-style: none;}
+        body{
+
+            background-size: 100%;
+        }
+        .container{
+            width: 1200px;
+            height: 100%;
+            margin: 0 auto;
+            /* 	background: #ccc; */
+        }
+        /* 导航 */
+        .nav{
+            margin-top: 10px;
+            height: 50px;
+            line-height: 50px;
+        }
+        .nav ul li{
+            float: right;
+            font-size: 15px;
+        }
+        .nav ul li a{
+            text-decoration: none;
+            color: #152b3c;
+            padding:15px 30px;
+        }
+        .nav ul li a:hover{
+            border: 1px solid white;
+            border-radius:5%;
+            color: white;
+        }
+        /* 主题内容 */
+        .main{
+            width:1200px;
+            height: 450px;
+        }
+        .sideleft{
+            width:460px;
+            height: 250px;
+            float: left;
+            padding:85px 130px
+        }
+        .sideleft p{
+            padding: 8px 0;
+            font-size: 16px;
+        }
+        .sideright{
+
+            width: 480px;
+            height: 550px;
+            float: right;
+        }
+        .sideright .index{
+            box-shadow: 5px 5px 5px #888888;
+            border: 1px solid;
+            border-color: #B5CEDE;
+
+            width: 330px;
+            height: 400px;
+            background-color:rgba(255,255,255,0.75);
+            margin: 180px 150px;
+        }
+        .headline{
+
+            text-align: center;
+            padding: 20px;
+        }
+        input[type="text"],
+        input[type="password"],
+        input[type="button"]{
+            -web-kit-appearance:none;
+            -moz-appearance: none;
+            display: block;
+            margin: 0 auto;
+            font-size:15px;
+            width: 240px;
+        }
+        input[type="text"]{
+            height:35px;
+            border-radius:3px;
+            border:1px solid #c8cccf;
+            color:#6a6f77;
+            outline:0;
+        }
+        input[type="password"]{
+            height:35px;
+            border-radius:3px;
+            border:1px solid #c8cccf;
+            color:#6a6f77;
+            outline:0;
+        }
+
+        input[type="button"]{
+            margin-top: 5px;
+            height: 35px;
+            background: #357eb8;
+            color: #bcedff;
+            font-weight: bold;
+            font-size: 15px;
+        }
+        input[type="button"]:hover{
+            background: #0e62a3;
+            cursor: pointer;
+        }
+        .yzm{
+            position:relative;
+            top:-12px;
+            font-size:15px;
+            border-radius:3px;
+            border:1px solid #c8cccf;
+            color:#6a6f77;
+            height: 35px;
+            margin-left: 45px
+        }
+        .astyle{
+            margin: 5px 0 5px 42px;
+            font-size:15px;
+            color: #6a6f77;
+        }
+        .bstyle{
+            display: block;
+            float: left;
+            margin-left: 46px;
+            font-size: 15px;
+        }
+        .cstyle{
+            display: block;
+            float: right;
+            margin-right: 46px;
+            font-size: 15px;
+        }
+        .cstyle a{
+            text-decoration: none;
+        }
+        .footer{
+            width: 1000px;
+            margin:60px auto;
+        }
+        .footer ul{
+            margin-left: 100px;
+        }
+        .footer ul li{
+            float: left;
+
+        }
+        .footer ul li a{
+            text-decoration: none;
+            color: black;
+            border-left: 2px solid black;
+            padding:0 10px;
+        }
+        .herder-img{
+            margin: 50px;
+            margin: -100px;
+
+        }
+
+
+    </style>
+
+    <script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
+    <script type="text/javascript">
+        function loadCheck() {
+            var name=document.getElementById("name").value;
+            //alert(name)
+            var password=document.getElementById("pwd").value;
+            var code=document.getElementById("code").value;
+            if(name.length==0||password.length==0){
+                alert("账号或密码为空！");
+                return;
+            }
+            if(code.length==0){
+                alert("验证码为空！");
+                return;
+            }
+
+            $.post("/login",{"userName":encodeURI(name),"password":password,"code":code},function(data){
+                if(data=="11"){
+                    var url = "/index" ;  //"/index.html?name=" + name;
+                    window.location.href=url;
+                }else{
+                    alert(data);
+                }
+                //使用空白div显示
+                //$("#insert").html(data);
+            });
+
+            /*xmlhttp.onreadystatechange=getResult;
+            //xmlhttp.open("POST","//<%--${pageContext.request.contextPath}--%>/Register/LoginServlet",true);
+            //alert("222")
+            //如果上面为post必须加下面这一行
+            xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+            xmlhttp.send("u="+name+"&p="+password);*/
+
+        }
+        function getResult() {
+            if(xmlhttp.readyState==4){
+                if(xmlhttp.status==200){
+                    var rec=xmlhttp.responseText;
+                    document.getElementById("#insert").innerHTML=rec;
+                }
+                else {
+                    alert("连接失败！")
+                }
+            }
+
+        }
+
+
+        function changeImg() {
+            var imgSrc = $("#imgObj");
+            imgSrc.attr("src", chgUrl());
+        }
+
+        // 时间戳
+        // 为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+        function chgUrl() {
+            var timestamp = (new Date()).valueOf();
+            return "/code?"+timestamp;
+        }
+        function updatePwd() {
+            $("#login").css("display","none");
+            $("#updatePwd").css("display","block");
+
+        }
+
+        function passCheck() {
+            var phone = document.getElementById("phone").value;
+            var email = document.getElementById("email").value;
+            var new1 = document.getElementById("new1").value;
+            var new2 = document.getElementById("new2").value;
+            if (new1.length == 0 || new2.length == 0) {
+                alert("密码不能为空！");
+            }
+            if(phone.length==0||email.length==0){
+                alert("邮箱或手机号不能为空")
+            }
+            if(new1.trim()!=new2.trim()){
+                alert("密码输入不一致！")
+            }
+            else {
+
+                $.post("/updatePwd", {"phone":phone,"email":email,"new1":new1}, function (data) {
+                    if (data ==1) {
+                        alert("密码修改成功！")
+                        window.location.href="/login"
+                    }else{
+                        alert(data);
+                    }
+
+                });
+            }
+        }
+
+    </script>
+</head>
+<body style="background: url(/index_files/login_background.jpg);background-repeat: no-repeat;background-size:100% 100%;background-attachment: fixed;">
+<div class="container">
+
+    <!-- 主体内容 （登陆界面）-->
+
+    <!--<div class="sideleft">
+        <a class="herder-img" href="http://localhost:8080/yinping/"><img src="login/sp190724_144707.jpg"></a>
+        <br>
+
+        <img src="./login/login190724_164744.png" width="400" height="450" >
+
+    </div>-->
+    <!-- 右侧登陆界面 -->
+    <div class="sideright" id="login">
+        <div class="index" >
+
+            <h1><p class="headline">login</p></h1>
+
+            <input id="name" type="text" name="userName"  maxlength="12" placeholder="请输入用户名"  required="required">
+            <br>
+            <input id="pwd" type="password" name="password" maxlength="16" placeholder="请输入密码"  required="required"><br>
+            <input class="yzm" id="code" name="code" placeholder="请输入验证码：" size="13" maxlength="4" required="required">
+            <img style="margin-left: 20px" id="imgObj" alt="验证码" src="/code" onclick="changeImg()">
+            <input type="button" value="登陆" name="login" class="btn btn-primary btn-block btn-large" onclick="loadCheck()" >
+            </br>
+
+
+            <p class="bstyle"><a onclick="updatePwd()">忘记密码</a></p>
+            <p class="cstyle">没有账号？<a href="/Register">立即注册</a></p>
+
+        </div>
+    </div>
+
+
+    <div class="sideright" id="updatePwd" style="display: none">
+        <div class="index" >
+            <h2 style="margin: 10px 120px">Modify</h2><br>
+            <Input id="phone" type="text" placeholder="手机号码" name="phone"><br>
+            <Input id="email" type="text" placeholder="邮箱号码" name="email"><br>
+            <Input id="new1" type=password placeholder="新的密码:" name="new1"><br>
+            <Input id="new2" type=password placeholder="确认密码:" name="new2"><br>
+
+            <BR><input type="button" class="btn btn-primary btn-block btn-large" value="确认修改" onclick="passCheck()">
+
+        </div>
+    </div>
+
+
+
+</div>
+</div>
+</body>
+
+
+</html>
